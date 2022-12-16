@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class HelloService {
+    var nameBd = HashMap<String, String>()
     fun getHello(): String {
         return "Hello Service"
     }
@@ -12,15 +13,14 @@ class HelloService {
         return "Hello Romchik"
     }
 
-    fun getHelloForName(name: String): String{
-        var response = ""
-        if (name == "Romchik") {
-            response = "Hello Romchik"
-        } else if (name == "Leha") {
-            response = "Darova Leha"
-        } else {
-            response = "$name is not found"
-        }
-        return response
+    fun getHelloForName(name: String):String{
+        return nameBd.get(name)!!
+    }
+    fun addName(name: String, greetings: String){
+        nameBd.put(name, greetings)
+    }
+
+    fun allName(): Map<String, String> {
+        return nameBd
     }
 }
