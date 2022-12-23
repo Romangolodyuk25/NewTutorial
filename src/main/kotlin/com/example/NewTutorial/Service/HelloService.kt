@@ -1,50 +1,46 @@
 package com.example.NewTutorial.Service
 
+import com.example.NewTutorial.Exception.NullKeyException
 import com.example.NewTutorial.dto.HelloDto
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
 class HelloService {
-    var nameBd = HashMap<String, String>()
-    var randomGreetings = HashMap<String, MutableList<String>>()
-    fun getHello(): String {
-        return "Hello Service"
-    }
-    fun getHelloRomchik(): String {
-        return "Hello Romchik"
+    var name2Greetings = HashMap<String, MutableList<String>>()
+
+    fun allName(): Map<String, MutableList<String>> {
+        return name2Greetings
     }
 
-    fun getHelloForName(name: String):String{
-        return nameBd.get(name)!!
+    fun getHelloForName(name: String): String {
+        return name2Greetings.get(name).toString()
     }
-    fun addName(name: String, greetings: String){
-        nameBd.put(name, greetings)
-    }
-
-    fun allName(): Map<String, String> {
-        return nameBd
-    }
-
     fun delete(name: String){
-        nameBd.remove(name)
+        name2Greetings.remove(name)
     }
 
-    /**
-     * Методы для Рандомных Приветствий из Списка
-     */
-    fun addRandomGreetings(name: String, greetings: MutableList<String>){
-        randomGreetings.put(name, greetings)
-//        var list = mutableListOf("Hello", "Good Morning", "Good Evening", "Хай", "Чо Каво")
-//      var values = (0 until list.size)
-//        var random = values.random()
-//        return ("$name ${list[random]}") .
+    fun deleteGreeting(name: String, index: Int):MutableList<String>?{
+        val nameAndGreeting = name2Greetings.getValue(name)
+        nameAndGreeting.removeAt(index)
+        return name2Greetings.get(name)
     }
 
-    fun getRandomGreetings(name: String): String {
-        var list = randomGreetings.getValue(name)
-        var values = (0 until list.size)
-        var random = values.random()
-        var str = randomGreetings.get(name)
-        return ("$name ${str!![random]}")
+
+    fun addName2Greetings(name: String, greetings: MutableList<String>){
+        name2Greetings.put(name, greetings)
+    }
+
+    fun getRandomGreeting(name: String): String {
+        if (name2Greetings.contains(name) == false) {
+            return "$name key is empty"
+            throw NullKeyException("Key name is empty")
+        } else {
+            val greetings = name2Greetings.getValue(name)
+            var values = (0 until greetings.size)
+            var random = values.random()
+            var str = name2Greetings.get(name)
+            return ("$name ${str?.get(random)}") //str[random]
+        }
     }
 }

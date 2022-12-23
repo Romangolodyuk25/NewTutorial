@@ -11,23 +11,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class HelloController(var helloService: HelloService) {
 
-    @GetMapping("/hello")
-    fun hello(): String{
-        return helloService.getHelloRomchik()
-    }
-
-    @GetMapping("/hello-service")
-    fun helloKotlin(): String {
-        return helloService.getHello()
-    }
-
     @GetMapping("/hello-dto")
     fun helloDto(): HelloDto {
         return HelloDto("Hello from the DTO")
     }
 
     @GetMapping("/getAllName")
-    fun getAllName(): Map<String, String>{
+    fun getAllName(): Map<String, MutableList<String>>{
         return helloService.allName()
     }
 
@@ -35,10 +25,9 @@ class HelloController(var helloService: HelloService) {
     fun getNameGreetings(@RequestParam name: String):String {
         return helloService.getHelloForName(name)
     }
-
-    @PostMapping("/addName")
-    fun addName(@RequestParam name:String, @RequestParam greetings: String) {
-        helloService.addName(name = name, greetings = greetings)
+    @PostMapping("/addNameAndGreetings")
+    fun addNameAndGreetings(@RequestParam name: String, @RequestParam greetings: MutableList<String>){
+        helloService.addName2Greetings(name, greetings)
     }
 
     @DeleteMapping("/deleteName")
@@ -46,18 +35,15 @@ class HelloController(var helloService: HelloService) {
         return helloService.delete(name)
     }
 
-    /**
-     * Методы для Рандомных Приветствий из Списка
-     */
-    @PostMapping("/addRandomName")
-    fun addRandomName(@RequestParam name: String, @RequestParam greetings: MutableList<String>){
-        helloService.addRandomGreetings(name, greetings)
+    @DeleteMapping("/deleteGreeting")
+    fun deleteGreeting(name: String, index: Int): MutableList<String>?{
+        return helloService.deleteGreeting(name, index)
     }
 
-    @GetMapping("/randomGreetings")
-    fun randomGreetings(@RequestParam name: String): String {
-        return helloService.getRandomGreetings(name)
-    }
 
+    @GetMapping("/getRandomGreeting")
+    fun getRandomGreeting(@RequestParam name: String): String {
+        return helloService.getRandomGreeting(name)
+    }
 
 }
