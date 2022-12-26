@@ -11,14 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class HelloController(var helloService: HelloService) {
 
-    @GetMapping("/hello-dto")
-    fun helloDto(): HelloDto {
-        return HelloDto("Hello from the DTO")
-    }
-
     @GetMapping("/getAllName")
-    fun getAllName(): Map<String, MutableList<String>>{
-        return helloService.allName()
+    fun getAllNames(): Map<String, MutableList<String>>{
+        return helloService.getAllNamesAndGreetings()
     }
 
     @GetMapping("/helloForName")
@@ -31,13 +26,13 @@ class HelloController(var helloService: HelloService) {
     }
 
     @DeleteMapping("/deleteName")
-    fun deletedName(@RequestParam name: String) {
+    fun deleteName(@RequestParam name: String) {
         return helloService.delete(name)
     }
 
     @DeleteMapping("/deleteGreeting")
-    fun deleteGreeting(name: String, index: Int): MutableList<String>?{
-        return helloService.deleteGreeting(name, index)
+    fun deleteGreeting(@RequestParam name: String, @RequestParam greeting: String){
+        helloService.deleteGreeting(name, greeting)//изменить что бы удаляось по значение а не по индексу
     }
 
 
