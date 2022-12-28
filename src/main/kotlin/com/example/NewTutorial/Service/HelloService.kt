@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class HelloService {
-    var name2Greetings = HashMap<String, MutableList<String>>()
+
+    private var name2Greetings = HashMap<String, MutableList<String>>()
 
     fun getAllNamesAndGreetings(): Map<String, MutableList<String>> {
         return name2Greetings
@@ -47,5 +48,9 @@ class HelloService {
             var str = name2Greetings.get(name)
             return ("$name ${str?.get(random)}") //str[random]
         }
+    }
+
+    fun deleteAll() {
+        name2Greetings.clear()
     }
 }
