@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class HelloController(var helloService: HelloService) {
 
-    @GetMapping("/getAllName")
+    @GetMapping("/getAllNames")
     fun getAllNames(): Map<String, MutableList<String>>{
         return helloService.getAllNamesAndGreetings()
     }
