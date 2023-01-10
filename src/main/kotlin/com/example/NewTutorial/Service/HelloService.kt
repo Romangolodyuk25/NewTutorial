@@ -14,8 +14,8 @@ class HelloService {
         return name2Greetings
     }
 
-    fun getHelloForName(name: String): String {
-        return name2Greetings.get(name).toString()
+    fun getHelloForName(name: String): MutableList<String>? {
+        return name2Greetings.get(name)
     }
     fun delete(name: String){
         name2Greetings.remove(name)

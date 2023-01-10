@@ -17,7 +17,7 @@ class HelloController(var helloService: HelloService) {
     }
 
     @GetMapping("/helloForName")
-    fun getNameGreetings(@RequestParam name: String):String {
+    fun getNameGreetings(@RequestParam name: String): MutableList<String>? {
         return helloService.getHelloForName(name)
     }
     @PostMapping("/addNameAndGreetings")
@@ -32,7 +32,7 @@ class HelloController(var helloService: HelloService) {
 
     @DeleteMapping("/deleteGreeting")
     fun deleteGreeting(@RequestParam name: String, @RequestParam greeting: String){
-        helloService.deleteGreeting(name, greeting)//изменить что бы удаляось по значение а не по индексу
+        helloService.deleteGreeting(name, greeting)
     }
 
 
