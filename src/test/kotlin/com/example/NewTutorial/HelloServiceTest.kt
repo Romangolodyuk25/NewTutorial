@@ -9,10 +9,14 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.util.ResourceUtils
+import java.nio.file.Files
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,39 +34,37 @@ class HelloServiceTest {
     }
 
     @Test
-    fun `should return all name with greeting`() {
+    fun `should return all names with greeting`() {
         helloService.addName2Greetings("Roma", mutableListOf("Хай", "Как дела", "Че каво"))
-
+        val expectedResponse = getFileContent("get_all_names_with_greetings.json")
         mvc.get("/getAllNames").andExpect {
             status { isOk() }
-            content {
-                json("{\"Roma\":[\"Хай\",\"Как дела\",\"Че каво\"]}")
-            }
+            content { json(expectedResponse) }
         }
     }
 
     @Test
     fun `should return greetings for name`() {
         helloService.addName2Greetings("Romchik", mutableListOf("Как дела", "Чем занят", "Какие планы"))
+        val expectedResponse = getFileContent("hello_for_name.json");
         val name = "Romchik"
         mvc.get("/helloForName?name=$name").andExpect {
             status { isOk() }
-            content {
-                json("[\"Как дела\", \"Чем занят\", \"Какие планы\"]")
-            }
+            content { json(expectedResponse) }
         }
     }
 
     @Test
     fun `should add name and greetings in map`() {
-        //Preparation
-        val name = "Roma"
-        val greetings = mutableListOf("Привет, Васап, Как ты")
-        //Action
-        mvc.post("/addNameAndGreetings?name=$name&greetings=$greetings").andExpect {
+        val request = getFileContent("add_name_and_greetings_request.json")
+        val expectedResponse = getFileContent("add_name_and_greetings_response.json")
+        mvc.post("/addNameAndGreetings"){
+            content = request
+            contentType = APPLICATION_JSON
+        }.andExpect {
             status { isOk() }
+            content { json(expectedResponse) }
         }
-        //Check
         helloService.getAllNamesAndGreetings().size shouldBe 1
     }
 
@@ -102,5 +104,9 @@ class HelloServiceTest {
                 string(anyOf(`is`("$name Привет"), `is`("$name Хай"), `is`("$name Как дела")))
             }
         }
+    }
+
+    private fun getFileContent(fileName: String): String {
+        return Files.readString(ResourceUtils.getFile("classpath:stubs/$fileName").toPath())
     }
 }
