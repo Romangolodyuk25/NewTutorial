@@ -36,7 +36,7 @@ class HelloServiceTest {
 
     @Test
     fun `should return all names with greeting`() {
-        helloService.addName2Greetings("Roma", HelloDto(mutableListOf(NameDto("Roma", mutableListOf("Хай", "Че каво"," Как дела")), NameDto("Леха", mutableListOf("merhabe", "selam", "hi")))))
+        helloService.addName2Greetings(name = "Roma", helloDto = HelloDto(mutableListOf(NameDto(name = "Roma", options = mutableListOf("Хай", "Как дела", "Че каво")), NameDto(name ="Лёха", options = mutableListOf("Merhaba", "Selam", "Hi")))))
         val expectedResponse = getFileContent("get_all_names_with_greetings.json")
         mvc.get("/getAllNames").andExpect {
             status { isOk() }

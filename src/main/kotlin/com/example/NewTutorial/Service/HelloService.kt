@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 class HelloService() {
     private var name2Greetings = HashMap<String, HelloDto>()
 
-    fun getAllNamesAndGreetings(): MutableCollection<HelloDto> {
-        return name2Greetings.values
+    fun getAllNamesAndGreetings(): List<HelloDto> {
+        return name2Greetings.map { it.value }
     }
 
     fun getHelloForName(name: String): HelloDto? {//вместо принмаемого отдельного параметра думаю положить data  объект

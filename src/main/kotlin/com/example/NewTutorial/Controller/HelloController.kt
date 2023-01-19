@@ -9,7 +9,7 @@ class HelloController(var helloService: HelloService,
 ) {
 
     @GetMapping("/getAllNames")
-    fun getAllNames(): MutableCollection<HelloDto> {
+    fun getAllNames(): List<HelloDto> {
         return helloService.getAllNamesAndGreetings()
     }
 
