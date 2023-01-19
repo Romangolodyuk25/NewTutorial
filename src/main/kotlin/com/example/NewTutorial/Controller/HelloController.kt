@@ -2,27 +2,24 @@ package com.example.NewTutorial.Controller
 
 import com.example.NewTutorial.Service.HelloService
 import com.example.NewTutorial.dto.HelloDto
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
-class HelloController(var helloService: HelloService) {
+class HelloController(var helloService: HelloService,
+) {
 
     @GetMapping("/getAllNames")
-    fun getAllNames(): Map<String, MutableList<String>>{
+    fun getAllNames(): MutableCollection<HelloDto> {
         return helloService.getAllNamesAndGreetings()
     }
 
     @GetMapping("/helloForName")
     fun getNameGreetings(@RequestParam name: String): MutableList<String>? {
-        return helloService.getHelloForName(name)
+        return mutableListOf()//helloService.getHelloForName(name) поставил пока что бы работало
     }
     @PostMapping("/addNameAndGreetings")
-    fun addNameAndGreetings(@RequestParam name: String, @RequestParam greetings: MutableList<String>){
-        helloService.addName2Greetings(name, greetings)
+    fun addNameAndGreetings(@RequestParam name: String, @RequestBody helloDto: HelloDto){
+        helloService.addName2Greetings(name, helloDto)
     }
 
     @DeleteMapping("/deleteName")
@@ -30,15 +27,15 @@ class HelloController(var helloService: HelloService) {
         return helloService.delete(name)
     }
 
-    @DeleteMapping("/deleteGreeting")
-    fun deleteGreeting(@RequestParam name: String, @RequestParam greeting: String){
-        helloService.deleteGreeting(name, greeting)
-    }
+//    @DeleteMapping("/deleteGreeting")
+//    fun deleteGreeting(@RequestParam name: String, @RequestParam greeting: String){
+//        helloService.deleteGreeting(name, greeting)
+//    }
 
 
-    @GetMapping("/getRandomGreeting")
-    fun getRandomGreeting(@RequestParam name: String): String {
-        return helloService.getRandomGreeting(name)
-    }
+//    @GetMapping("/getRandomGreeting")
+//    fun getRandomGreeting(@RequestParam name: String): String {
+//        return helloService.getRandomGreeting(name)
+//    }
 
 }
