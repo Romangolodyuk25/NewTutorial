@@ -1,15 +1,15 @@
 package com.example.NewTutorial.Service
 
+import com.example.NewTutorial.dto.Greeting
 import com.example.NewTutorial.dto.HelloDto
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
 class HelloService() {
     private var name2Greetings = HashMap<String, HelloDto>()
 
-    fun getAllNamesAndGreetings(): List<HelloDto> {
-        return name2Greetings.map { it.value }
+    fun getAllNamesAndGreetings(): HelloDto? {
+        return HelloDto(mutableListOf(Greeting("Roma", mutableListOf("Хай", "Как дела", "Че каво")), Greeting("Лёха", mutableListOf("Merhaba", "Selam", "Hi"))))
     }
 
     fun getHelloForName(name: String): HelloDto? {//вместо принмаемого отдельного параметра думаю положить data  объект

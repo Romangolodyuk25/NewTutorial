@@ -1,3 +1,3 @@
 package com.example.NewTutorial.dto
 
-data class HelloDto(val greetings: MutableList<NameDto>)
+data class HelloDto(val greetings: MutableList<Greeting>)
