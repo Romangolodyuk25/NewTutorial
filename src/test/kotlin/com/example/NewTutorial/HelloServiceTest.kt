@@ -59,10 +59,23 @@ class HelloServiceTest {
             name = "Батя", HelloDto(
                 greetings = mutableListOf(
                     Greeting(
-                        name = "Лёха", options = mutableListOf(
+                        name = "Батя", options = mutableListOf(
                             "Как жизнь молодая?",
                             "Девки толпами бегают?",
                             "Здоров спиногрыз!"
+                        )
+                    )
+                )
+            )
+        )
+        helloService.addName2Greetings(
+            name = "Батя", HelloDto(
+                greetings = mutableListOf(
+                    Greeting(
+                        name = "Батя", options = mutableListOf(
+                            "Ну ты и худой стал!",
+                            "Курить не начал?",
+                            "В наше время было лучше!"
                         )
                     )
                 )
