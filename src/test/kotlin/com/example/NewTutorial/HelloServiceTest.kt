@@ -1,9 +1,8 @@
 package com.example.NewTutorial
 
 import com.example.NewTutorial.Service.HelloService
-import com.example.NewTutorial.dto.HelloDto
 import com.example.NewTutorial.dto.Greeting
-import io.kotest.matchers.shouldBe
+import com.example.NewTutorial.dto.HelloDto
 import org.hamcrest.Matchers.anyOf
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -36,8 +35,40 @@ class HelloServiceTest {
 
     @Test
     fun `should return all names with greeting`() {
-        helloService.addName2Greetings(name = "Roma", helloDto = HelloDto(mutableListOf(Greeting(name = "Roma", options = mutableListOf("Хай", "Как дела", "Че каво")), Greeting(name ="Лёха", options = mutableListOf("Merhaba", "Selam", "Hi")))))
+        helloService.addName2Greetings(
+            name = "Roma",
+            helloDto = HelloDto(
+                mutableListOf(
+                    Greeting(
+                        name = "Roma",
+                        options = mutableListOf("Хай", "Как дела", "Че каво")
+                    ), Greeting(name = "Лёха", options = mutableListOf("Merhaba", "Selam", "Hi"))
+                )
+            )
+        )
         val expectedResponse = getFileContent("get_all_names_with_greetings.json")
+        mvc.get("/getAllNames").andExpect {
+            status { isOk() }
+            content { json(expectedResponse) }
+        }
+    }
+
+    @Test
+    fun `should return all names with greeting for father`() {
+        helloService.addName2Greetings(
+            name = "Батя", HelloDto(
+                greetings = mutableListOf(
+                    Greeting(
+                        name = "Лёха", options = mutableListOf(
+                            "Как жизнь молодая?",
+                            "Девки толпами бегают?",
+                            "Здоров спиногрыз!"
+                        )
+                    )
+                )
+            )
+        )
+        val expectedResponse = getFileContent("get_all_names_with_greetings_v2.json")
         mvc.get("/getAllNames").andExpect {
             status { isOk() }
             content { json(expectedResponse) }
@@ -54,12 +85,13 @@ class HelloServiceTest {
             content { json(expectedResponse) }
         }
     }
-// тест
+
+    // тест
     @Test
     fun `should add name and greetings in map`() {
         val request = getFileContent("add_name_and_greetings_request.json")
         val expectedResponse = getFileContent("add_name_and_greetings_response.json")
-        mvc.post("/addNameAndGreetings"){
+        mvc.post("/addNameAndGreetings") {
             content = request
             contentType = APPLICATION_JSON
         }.andExpect {
