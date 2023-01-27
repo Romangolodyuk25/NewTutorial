@@ -9,7 +9,7 @@ class HelloController(var helloService: HelloService,
 ) {
 
     @GetMapping("/getAllNames")
-    fun getAllNames(): HelloDto? {
+    fun getAllNames(): HelloDto {
         return helloService.getAllNamesAndGreetings()
     }
 
@@ -19,7 +19,7 @@ class HelloController(var helloService: HelloService,
     }
     @PostMapping("/addNameAndGreetings")
     fun addNameAndGreetings(@RequestParam name: String, @RequestBody helloDto: HelloDto){
-        helloService.addName2Greetings(name, helloDto)
+        //helloService.addName2Greetings(name, helloDto)
     }
 
     @DeleteMapping("/deleteName")

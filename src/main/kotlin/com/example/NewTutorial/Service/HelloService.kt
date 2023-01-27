@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class HelloService() {
-    private var name2Greetings = HashMap<String, HelloDto>()
+    private var name2Greetings = HashMap<String, Greeting>()
 
     fun getAllNamesAndGreetings(): HelloDto {
-        return name2Greetings.values.first()
-        //return HelloDto(mutableListOf(Greeting("Roma", mutableListOf("Хай", "Как дела", "Че каво")), Greeting("Лёха", mutableListOf("Merhaba", "Selam", "Hi"))))
+        return HelloDto(name2Greetings.values.toList())
     }
 
     fun getHelloForName(name: String): HelloDto? {//вместо принмаемого отдельного параметра думаю положить data  объект
-        return name2Greetings.get(name)
+        TODO()
     }
+
     fun delete(name: String){
         name2Greetings.remove(name)
     }
@@ -33,8 +33,8 @@ class HelloService() {
 //    }
 
 
-    fun addName2Greetings(name: String, helloDto: HelloDto){
-        name2Greetings.put(name, helloDto)
+    fun addName2Greetings(name: String, greeting: Greeting){
+        name2Greetings.put(name, greeting)
     }
 
 //    fun getRandomGreeting(name: String): String {

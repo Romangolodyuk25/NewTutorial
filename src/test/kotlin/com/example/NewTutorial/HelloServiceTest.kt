@@ -2,7 +2,7 @@ package com.example.NewTutorial
 
 import com.example.NewTutorial.Service.HelloService
 import com.example.NewTutorial.dto.Greeting
-import com.example.NewTutorial.dto.HelloDto
+import io.kotest.matchers.shouldBe
 import org.hamcrest.Matchers.anyOf
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeEach
@@ -35,17 +35,10 @@ class HelloServiceTest {
 
     @Test
     fun `should return all names with greeting`() {
-        helloService.addName2Greetings(
-            name = "Roma",
-            helloDto = HelloDto(
-                mutableListOf(
-                    Greeting(
-                        name = "Roma",
-                        options = mutableListOf("Хай", "Как дела", "Че каво")
-                    ), Greeting(name = "Лёха", options = mutableListOf("Merhaba", "Selam", "Hi"))
-                )
-            )
-        )
+        val roma = Greeting(name = "Roma", options = mutableListOf("Хай", "Как дела", "Че каво"))
+        val leha = Greeting(name = "Лёха", options = mutableListOf("Merhaba", "Selam", "Hi"))
+        helloService.addName2Greetings(roma.name, roma)
+        helloService.addName2Greetings(leha.name, leha)
         val expectedResponse = getFileContent("get_all_names_with_greetings.json")
         mvc.get("/getAllNames").andExpect {
             status { isOk() }
@@ -55,32 +48,22 @@ class HelloServiceTest {
 
     @Test
     fun `should return all names with greeting for father`() {
-        helloService.addName2Greetings(
-            name = "Батя", HelloDto(
-                greetings = mutableListOf(
-                    Greeting(
-                        name = "Батя", options = mutableListOf(
-                            "Как жизнь молодая?",
-                            "Девки толпами бегают?",
-                            "Здоров спиногрыз!"
-                        )
-                    )
-                )
+        val father = Greeting(
+            name = "Батя", options = mutableListOf(
+                "Как жизнь молодая?",
+                "Девки толпами бегают?",
+                "Здоров спиногрыз!"
             )
         )
-        helloService.addName2Greetings(
-            name = "Батя", HelloDto(
-                greetings = mutableListOf(
-                    Greeting(
-                        name = "Батя", options = mutableListOf(
-                            "Ну ты и худой стал!",
-                            "Курить не начал?",
-                            "В наше время было лучше!"
-                        )
-                    )
-                )
+        val ded = Greeting(
+            name = "Дед", options = mutableListOf(
+                "Ну ты и худой стал!",
+                "Курить не начал?",
+                "В наше время было лучше!"
             )
         )
+        helloService.addName2Greetings(father.name, father)
+        helloService.addName2Greetings(ded.name, ded)
         val expectedResponse = getFileContent("get_all_names_with_greetings_v2.json")
         mvc.get("/getAllNames").andExpect {
             status { isOk() }
@@ -90,10 +73,10 @@ class HelloServiceTest {
 
     @Test
     fun `should return greetings for name`() {
-//        helloService.addName2Greetings("Romchik", mutableListOf("Как дела", "Чем занят", "Какие планы"))
-        val expectedResponse = getFileContent("hello_for_name.json");
-        val name = "Romchik"
-        mvc.get("/helloForName?name=$name").andExpect {
+        val greeting = Greeting("roma", mutableListOf("Как дела", "Чем занят", "Какие планы"))
+        helloService.addName2Greetings(greeting.name, greeting)
+        val expectedResponse = getFileContent("hello_for_name.json")
+        mvc.get("/helloForName?name=${greeting.name}").andExpect {
             status { isOk() }
             content { json(expectedResponse) }
         }
@@ -111,7 +94,7 @@ class HelloServiceTest {
             status { isOk() }
             content { json(expectedResponse) }
         }
-//        helloService.getAllNamesAndGreetings().size shouldBe 1
+        helloService.getAllNamesAndGreetings().greetings.size shouldBe 1
     }
 
     @Test
