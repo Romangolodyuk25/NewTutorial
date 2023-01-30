@@ -1,6 +1,7 @@
 package com.example.NewTutorial.Controller
 
 import com.example.NewTutorial.Service.HelloService
+import com.example.NewTutorial.dto.Greeting
 import com.example.NewTutorial.dto.HelloDto
 import org.springframework.web.bind.annotation.*
 
@@ -14,12 +15,12 @@ class HelloController(var helloService: HelloService,
     }
 
     @GetMapping("/helloForName")
-    fun getNameGreetings(@RequestParam name: String): MutableList<String>? {
-        return mutableListOf()//helloService.getHelloForName(name) поставил пока что бы работало
+    fun getNameGreetings(@RequestParam name: String): Greeting?{
+        return helloService.getHelloForName(name)
     }
     @PostMapping("/addNameAndGreetings")
-    fun addNameAndGreetings(@RequestParam name: String, @RequestBody helloDto: HelloDto){
-        //helloService.addName2Greetings(name, helloDto)
+    fun addNameAndGreetings(@RequestParam name: String, @RequestBody greeting: Greeting): Greeting?{
+        return helloService.addName2Greetings(name, greeting)
     }
 
     @DeleteMapping("/deleteName")

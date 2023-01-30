@@ -12,8 +12,8 @@ class HelloService() {
         return HelloDto(name2Greetings.values.toList())
     }
 
-    fun getHelloForName(name: String): HelloDto? {//вместо принмаемого отдельного параметра думаю положить data  объект
-        TODO()
+    fun getHelloForName(name: String): Greeting? {//вместо принмаемого отдельного параметра думаю положить data  объект
+        return name2Greetings.get(name)
     }
 
     fun delete(name: String){
@@ -33,8 +33,9 @@ class HelloService() {
 //    }
 
 
-    fun addName2Greetings(name: String, greeting: Greeting){
+    fun addName2Greetings(name: String, greeting: Greeting): Greeting?{
         name2Greetings.put(name, greeting)
+        return name2Greetings.get(name)
     }
 
 //    fun getRandomGreeting(name: String): String {

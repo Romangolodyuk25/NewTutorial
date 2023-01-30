@@ -73,7 +73,7 @@ class HelloServiceTest {
 
     @Test
     fun `should return greetings for name`() {
-        val greeting = Greeting("roma", mutableListOf("Как дела", "Чем занят", "Какие планы"))
+        val greeting = Greeting("Roma", mutableListOf("Хай", "Как дела", "Че каво"))
         helloService.addName2Greetings(greeting.name, greeting)
         val expectedResponse = getFileContent("hello_for_name.json")
         mvc.get("/helloForName?name=${greeting.name}").andExpect {
@@ -87,7 +87,8 @@ class HelloServiceTest {
     fun `should add name and greetings in map`() {
         val request = getFileContent("add_name_and_greetings_request.json")
         val expectedResponse = getFileContent("add_name_and_greetings_response.json")
-        mvc.post("/addNameAndGreetings") {
+        val name = "Roma"
+        mvc.post("/addNameAndGreetings?name=$name") {
             content = request
             contentType = APPLICATION_JSON
         }.andExpect {
