@@ -1,0 +1,20 @@
+{
+  "greetings": [
+    {
+      "name": "Roma",
+      "options": [
+        "Хай",
+        "Как дела",
+        "Че каво"
+      ]
+    },
+    {
+      "name": "Лёха",
+      "options": [
+        "Merhaba",
+        "Selam",
+        "Hi"
+      ]
+    }
+  ]
+}

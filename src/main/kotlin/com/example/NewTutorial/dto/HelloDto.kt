@@ -1,5 +1,3 @@
 package com.example.NewTutorial.dto
 
-class HelloDto(var greeting: String) {
-
-}
+data class HelloDto(val greetings: List<Greeting>)
