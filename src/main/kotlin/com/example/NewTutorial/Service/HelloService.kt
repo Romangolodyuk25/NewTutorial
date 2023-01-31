@@ -35,7 +35,7 @@ class HelloService() {
 
     fun addName2Greetings(name: String, greeting: Greeting): Greeting?{
         name2Greetings.put(name, greeting)
-        return name2Greetings.get(name)
+        return name2Greetings.getValue(name)
     }
 
 //    fun getRandomGreeting(name: String): String {

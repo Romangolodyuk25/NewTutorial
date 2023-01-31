@@ -19,8 +19,8 @@ class HelloController(var helloService: HelloService,
         return helloService.getHelloForName(name)
     }
     @PostMapping("/addNameAndGreetings")
-    fun addNameAndGreetings(@RequestParam name: String, @RequestBody greeting: Greeting): Greeting?{
-        return helloService.addName2Greetings(name, greeting)
+    fun addNameAndGreetings(@RequestBody greeting: Greeting): Greeting?{
+        return helloService.addName2Greetings(greeting.name, greeting)
     }
 
     @DeleteMapping("/deleteName")

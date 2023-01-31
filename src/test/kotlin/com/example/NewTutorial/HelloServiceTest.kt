@@ -88,7 +88,7 @@ class HelloServiceTest {
         val request = getFileContent("add_name_and_greetings_request.json")
         val expectedResponse = getFileContent("add_name_and_greetings_response.json")
         val name = "Roma"
-        mvc.post("/addNameAndGreetings?name=$name") {
+        mvc.post("/addNameAndGreetings") {
             content = request
             contentType = APPLICATION_JSON
         }.andExpect {
