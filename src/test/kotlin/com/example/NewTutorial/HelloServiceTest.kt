@@ -87,7 +87,6 @@ class HelloServiceTest {
     fun `should add name and greetings in map`() {
         val request = getFileContent("add_name_and_greetings_request.json")
         val expectedResponse = getFileContent("add_name_and_greetings_response.json")
-        val name = "Roma"
         mvc.post("/addNameAndGreetings") {
             content = request
             contentType = APPLICATION_JSON
@@ -100,38 +99,43 @@ class HelloServiceTest {
 
     @Test
     fun `should delete name and greetings from map`() {
-//        helloService.addName2Greetings("Roma", mutableListOf("Привет", "Как дела", "Как сам"))
+        val greeting = Greeting("Roma", mutableListOf("Хай", "Как дела", "Че каво"))
+        helloService.addName2Greetings(greeting.name, greeting)
         val name = "Roma"
         mvc.delete("/deleteName?name=$name").andExpect {
             status { isOk() }
         }
-//        helloService.getAllNamesAndGreetings().size shouldBe 0
+        helloService.getAllNamesAndGreetings().greetings.size shouldBe 0
     }
 
     @Test
-    fun `should delete greeting by value`() {
-//        helloService.addName2Greetings("Roma", mutableListOf("Привет", "Хай", "Как дела"))
-        val name = "Roma"
-        val value = "Как дела"
-        mvc.delete("/deleteGreeting?name=$name&greeting=$value").andExpect {
+    fun `should delete greeting for name`() {
+        val expectedResponse = getFileContent("delete_greeting_for_name.json")
+        val greeting = Greeting("Roma", mutableListOf("Че каво", "Привет", "Хай"))
+        helloService.addName2Greetings(greeting.name, greeting)
+        mvc.delete("/deleteGreeting?name=${greeting.name}&greeting=Хай").andExpect {
             status { isOk() }
         }
         mvc.get("/getAllNames").andExpect {
             status { isOk() }
             content {
-                json("{\"Roma\":[\"Привет\",\"Хай\"]}")
+                json(expectedResponse)
             }
         }
     }
 
     @Test
     fun `should return random greeting from list greetings`() {
-//        helloService.addName2Greetings("Roma", mutableListOf("Привет", "Хай", "Как дела"))
-        val name = "Roma"
-        mvc.get("/getRandomGreeting?name=$name").andExpect {
+        val greeting = Greeting("Roma", mutableListOf("Че каво", "Привет", "Хай"))
+        helloService.addName2Greetings(greeting.name, greeting)
+        mvc.get("/getRandomGreeting?name=${greeting.name}").andExpect {
             status { isOk() }
             content {
-                string(anyOf(`is`("$name Привет"), `is`("$name Хай"), `is`("$name Как дела")))
+                jsonPath("$.greeting", anyOf(
+                    `is`("Привет, Roma!"),
+                    `is`("Че каво, Roma!"),
+                    `is`("Хай, Roma!"))
+                )
             }
         }
     }
